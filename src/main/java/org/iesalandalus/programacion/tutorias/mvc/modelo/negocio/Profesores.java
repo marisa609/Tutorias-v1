@@ -60,44 +60,17 @@ public class Profesores {
 		
 	}
 
-	// Buscar índice
-
-	private int buscarIndice(Profesor profesor) {
-		int indice = 0;
-		boolean profesorEncontrado = false;
-		while (!tamanoSuperado(indice) && !profesorEncontrado) {
-			if (coleccionProfesores[indice].equals(profesor)) {
-				profesorEncontrado = true;
-			} else {
-				indice++;
-			}
-		}
-		return indice;
-	}
-
-	// Tamaño superado
-
-	private boolean tamanoSuperado(int indice) {
-		return indice >= tamano;
-	}
-
-	// Capacidad superada
-
-	private boolean capacidadSuperada(int indice) {
-		return indice >= capacidad;
-	}
-
 	// Buscar
 
 	public Profesor buscar(Profesor profesor) {
 		if (profesor == null) {
 			throw new IllegalArgumentException("ERROR: No se puede buscar un profesor nulo.");
 		}
-		int indice = buscarIndice(profesor);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionProfesores.indexOf(profesor);
+		if (indice == -1) {
 			return null;
 		} else {
-			return new Profesor(coleccionProfesores[indice]);
+			return new Profesor(coleccionProfesores.get(indice));
 		}
 	}
 
@@ -107,22 +80,11 @@ public class Profesores {
 		if (profesor == null) {
 			throw new IllegalArgumentException("ERROR: No se puede borrar un profesor nulo.");
 		}
-		int indice = buscarIndice(profesor);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionProfesores.indexOf(profesor);
+		if (indice == -1) {
 			throw new OperationNotSupportedException("ERROR: No existe ningún profesor con ese DNI.");
 		} else {
-			desplazarUnaPosicionHaciaIzquierda(indice);
+			coleccionProfesores.remove(indice);
 		}
-	}
-
-	// Desplazar una posición hacia izquierda
-
-	private void desplazarUnaPosicionHaciaIzquierda(int indice) {
-		int i;
-		for (i = indice; !tamanoSuperado(i); i++) {
-			coleccionProfesores[i] = coleccionProfesores[i + 1];
-		}
-		coleccionProfesores[i] = null;
-		tamano--;
 	}
 }
