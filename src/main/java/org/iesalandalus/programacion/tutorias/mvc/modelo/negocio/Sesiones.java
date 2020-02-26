@@ -33,16 +33,15 @@ public class Sesiones {
 	}
 
 	// SESIONES PROFESOR TUTORIA Y FECHA DE LA SESION ¿? Profesor ¿?
-	// Las sesiones se ordenarán por tutoría y por fecha.
 
 	// Get
+	//Las sesiones se ordenarán por tutoría y por fecha.
 
 	public List<Sesion> get() {
 		List<Sesion> sesionesOrdenadas = copiaProfundaSesiones();
 		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
 		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getFecha);
-		sesionesOrdenadas.sort(Comparator.comparing(Tutoria::getNotbre, comparadorTutoria)
-				.thenComparing(Sesion::getFecha, comparadorSesion));
+		sesionesOrdenadas.sort(Comparator.comparing(Sesion::getTutoria, comparadorTutoria).thenComparing(Sesion::getSesion, comparadorSesion));
 		return sesionesOrdenadas;
 	}
 
@@ -61,8 +60,9 @@ public class Sesiones {
 			}
 		}
 		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getFecha);
-		sesionesTutoria.sort(Comparator.comparing(Sesion::getFecha, comparadorSesion));
+		sesionesTutoria.sort(Comparator.comparing(Sesion::getFecha));
 		return sesionesTutoria;
+		
 	}
 
 	// Get Tamaño
