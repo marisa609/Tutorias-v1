@@ -1,5 +1,7 @@
 package org.iesalandalus.programacion.tutorias.mvc.modelo;
 
+import java.util.List;
+
 import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Alumno;
@@ -15,8 +17,6 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.negocio.Tutorias;
 
 public class Modelo {
 
-	private static final int CAPACIDAD = 50;
-
 	private Alumnos alumnos;
 	private Profesores profesores;
 	private Tutorias tutorias;
@@ -25,11 +25,11 @@ public class Modelo {
 
 	public Modelo() {
 
-		this.alumnos = new Alumnos(CAPACIDAD);
-		this.profesores = new Profesores(CAPACIDAD);
-		this.tutorias = new Tutorias(CAPACIDAD);
-		this.sesiones = new Sesiones(CAPACIDAD);
-		this.citas = new Citas(CAPACIDAD);
+		alumnos = new Alumnos();
+		profesores = new Profesores();
+		tutorias = new Tutorias();
+		sesiones = new Sesiones();
+		citas = new Citas();
 	}
 
 	// INSERTAR
@@ -115,19 +115,45 @@ public class Modelo {
 
 	// BORRAR
 
+	// Al borrar un alumno deberemos borrar todas las citas asociadas al mismo.
+
 	public void borrar(Alumno alumno) throws OperationNotSupportedException, IllegalArgumentException {
+		List<Cita> citasAlumno = citas.get(alumno);
+		for (Cita cita : citasAlumno) {
+			citas.borrar(cita);
+		}
 		alumnos.borrar(alumno);
 	}
 
+	// Al borrar un profesor deberemos borrar todas las tutorías (en cascada)
+	// asociadas al mismo.
+
 	public void borrar(Profesor profesor) throws OperationNotSupportedException, IllegalArgumentException {
+		List<Tutoria> tutoriasProfesor = tutorias.get(profesor);
+		for (Tutoria tutoria : tutoriasProfesor) {
+			tutorias.borrar(tutoria);
+		}
 		profesores.borrar(profesor);
 	}
 
+	// Al borrar una tutoría deberemos borrar todas las sesiones (en cascada)
+	// asociadas a la misma.
+
 	public void borrar(Tutoria tutoria) throws OperationNotSupportedException, IllegalArgumentException {
+		List<Sesion> sesionesTutoria = sesiones.get(tutoria);
+		for (Sesion sesion : sesionesTutoria) {
+			sesiones.borrar(sesion);
+		}
 		tutorias.borrar(tutoria);
 	}
 
+	// Al borrar una sesión deberemos borrar todas las citas asociadas a la misma.
+
 	public void borrar(Sesion sesion) throws OperationNotSupportedException, IllegalArgumentException {
+		List<Cita> citaSesion = citas.get(sesion);
+		for (Cita cita : citaSesion) {
+			citas.borrar(cita);
+		}
 		sesiones.borrar(sesion);
 	}
 
@@ -137,39 +163,39 @@ public class Modelo {
 
 	// GET
 
-	public Alumno[] getAlumnos() {
+	public List<Alumno> getAlumnos() {
 		return alumnos.get();
 	}
 
-	public Profesor[] getProfesores() {
+	public List<Profesor> getProfesores() {
 		return profesores.get();
 	}
 
-	public Tutoria[] getTutorias() {
+	public List<Tutoria> getTutorias() {
 		return tutorias.get();
 	}
 
-	public Tutoria[] getTutorias(Profesor profesor) {
+	public List<Tutoria> getTutorias(Profesor profesor) {
 		return tutorias.get(profesor);
 	}
 
-	public Sesion[] getSesiones() {
+	public List<Sesion> getSesiones() {
 		return sesiones.get();
 	}
 
-	public Sesion[] getSesiones(Tutoria tutoria) {
+	public List<Sesion> getSesiones(Tutoria tutoria) {
 		return sesiones.get(tutoria);
 	}
 
-	public Cita[] getCitas() {
+	public List<Cita> getCitas() {
 		return citas.get();
 	}
 
-	public Cita[] getCitas(Sesion sesion) {
+	public List<Cita> getCitas(Sesion sesion) {
 		return citas.get(sesion);
 	}
 
-	public Cita[] getCitas(Alumno alumno) {
+	public List<Cita> getCitas(Alumno alumno) {
 		return citas.get(alumno);
 	}
 

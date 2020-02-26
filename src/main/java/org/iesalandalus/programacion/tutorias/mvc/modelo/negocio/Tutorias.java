@@ -28,8 +28,7 @@ public class Tutorias {
 	public List<Tutoria> get() {
 		List<Tutoria> tutoriasOrdenadas = copiaProfundaTutorias();
 		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
-		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
-		tutoriasOrdenadas.sort(Comparator.comparing(Tutoria::getProfesor, comparadorProfesor).thenComparing(Tutoria::getTutoria, comparadorTutoria));
+		tutoriasOrdenadas.sort(Comparator.comparing(Tutoria::getProfesor, comparadorProfesor).thenComparing(Tutoria::getNombre));
 		return tutoriasOrdenadas;
 	}
 
@@ -59,7 +58,7 @@ public class Tutorias {
 		}
 
 		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
-		tutoriasProfesor.sort(Comparator.comparing(Tutoria::getNombre, comparadorTutoria));
+		tutoriasProfesor.sort(Comparator.comparing(Tutoria::getNombre));
 		return tutoriasProfesor;
 	}
 

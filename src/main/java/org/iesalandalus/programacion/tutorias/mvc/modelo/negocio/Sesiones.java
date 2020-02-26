@@ -40,8 +40,7 @@ public class Sesiones {
 	public List<Sesion> get() {
 		List<Sesion> sesionesOrdenadas = copiaProfundaSesiones();
 		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
-		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getFecha);
-		sesionesOrdenadas.sort(Comparator.comparing(Sesion::getTutoria, comparadorTutoria).thenComparing(Sesion::getSesion, comparadorSesion));
+		sesionesOrdenadas.sort(Comparator.comparing(Sesion::getTutoria, comparadorTutoria).thenComparing(Sesion::getFecha));
 		return sesionesOrdenadas;
 	}
 

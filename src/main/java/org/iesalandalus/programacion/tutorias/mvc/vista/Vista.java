@@ -1,5 +1,7 @@
 package org.iesalandalus.programacion.tutorias.mvc.vista;
 
+import java.util.List;
+
 import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.tutorias.mvc.controlador.Controlador;
@@ -78,8 +80,8 @@ public class Vista {
 
 	public void listarAlumnos() {
 		Consola.mostrarCabecera("Listado de Alumnos");
-		Alumno[] alumnos = controlador.getAlumnos();
-		if (alumnos[0] != null) {
+		List<Alumno> alumnos = controlador.getAlumnos();
+		if (!alumnos.isEmpty()) {
 			for (Alumno alumno : alumnos) {
 				if (alumno != null)
 					System.out.println(alumno);
@@ -125,8 +127,8 @@ public class Vista {
 
 	public void listarProfesores() {
 		Consola.mostrarCabecera("Listado de Profesores");
-		Profesor[] profesores = controlador.getProfesores();
-		if (profesores[0] != null) {
+		List<Profesor> profesores = controlador.getProfesores();
+		if (!profesores.isEmpty()) {
 			for (Profesor profesor : profesores) {
 				if (profesor != null)
 					System.out.println(profesor);
@@ -172,8 +174,8 @@ public class Vista {
 
 	public void listarTutorias() {
 		Consola.mostrarCabecera("Listado de Tutorías");
-		Tutoria[] tutorias = controlador.getTutorias();
-		if (tutorias[0] != null) {
+		List<Tutoria> tutorias = controlador.getTutorias();
+		if (!tutorias.isEmpty()) {
 			for (Tutoria tutoria : tutorias) {
 				if (tutoria != null)
 					System.out.println(tutoria);
@@ -187,8 +189,8 @@ public class Vista {
 		Consola.mostrarCabecera("Listado de Tutorías por Profesor");
 		try {
 			controlador.getTutorias(Consola.leerProfesorFicticio());
-			Tutoria[] tutorias = controlador.getTutorias(Consola.leerProfesorFicticio());
-			if (tutorias[0] != null) {
+			List<Tutoria> tutorias = controlador.getTutorias(Consola.leerProfesorFicticio());
+			if (!tutorias.isEmpty()) {
 				for (Tutoria tutoria : tutorias) {
 					if (tutoria != null)
 						System.out.println(tutoria);
@@ -238,8 +240,8 @@ public class Vista {
 
 	public void listarSesiones() {
 		Consola.mostrarCabecera("Listado de Sesiones");
-		Sesion[] sesiones = controlador.getSesiones();
-		if (sesiones[0] != null) {
+		List<Sesion> sesiones = controlador.getSesiones();
+		if (!sesiones.isEmpty()) {
 			for (Sesion sesion : sesiones) {
 				if (sesion != null)
 					System.out.println(sesion);
@@ -252,8 +254,8 @@ public class Vista {
 	public void listarSesionesTutoria() {
 		Consola.mostrarCabecera("Listado de Sesiones por Tutoría");
 		try {
-			Sesion[] sesiones = controlador.getSesiones(Consola.leerTutoria());
-			if (sesiones[0] != null) {
+			List<Sesion> sesiones = controlador.getSesiones(Consola.leerTutoria());
+			if (!sesiones.isEmpty()) {
 				for (Sesion sesion : sesiones) {
 					if (sesion != null)
 						System.out.println(sesion);
@@ -302,8 +304,8 @@ public class Vista {
 
 	public void listarCitas() {
 		Consola.mostrarCabecera("Listado de Citas");
-		Cita[] citas = controlador.getCitas();
-		if (citas[0] != null) {
+		List<Cita> citas = controlador.getCitas();
+		if (!citas.isEmpty()) {
 			for (Cita cita : citas) {
 				if (cita != null)
 					System.out.println(cita);
@@ -316,8 +318,8 @@ public class Vista {
 	public void listarCitasSesion() {
 		Consola.mostrarCabecera("Listado de Citas por Sesion");
 		try {
-			Cita[] citas = controlador.getCitas(Consola.leerSesionFicticia());
-			if (citas[0] != null) {
+			List<Cita> citas = controlador.getCitas(Consola.leerSesionFicticia());
+			if (!citas.isEmpty()) {
 				for (Cita cita : citas) {
 					if (cita != null)
 						System.out.println(cita);
@@ -334,8 +336,8 @@ public class Vista {
 		Consola.mostrarCabecera("Listado de Citas por Alumno");
 		try {
 			controlador.getCitas(Consola.leerAlumnoFicticio());
-			Cita[] citas = controlador.getCitas(Consola.leerAlumnoFicticio());
-			if (citas[0] != null) {
+			List<Cita> citas = controlador.getCitas(Consola.leerAlumnoFicticio());
+			if (!citas.isEmpty()) {
 				for (Cita cita : citas) {
 					if (cita != null)
 						System.out.println(cita);
