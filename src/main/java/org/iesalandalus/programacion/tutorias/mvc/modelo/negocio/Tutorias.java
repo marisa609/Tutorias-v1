@@ -1,5 +1,9 @@
 package org.iesalandalus.programacion.tutorias.mvc.modelo.negocio;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Profesor;
@@ -7,64 +11,64 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
 
 public class Tutorias {
 
-	// Declaración de atributos
+	// Declaración
 
-	private int capacidad;
-	private int tamano;
-	private Tutoria[] coleccionTutorias;
+	private List<Tutoria> coleccionTutorias;
 
 	// Constructor
 
-	public Tutorias(int capacidad) {
-		if (capacidad <= 0) {
-			throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
-		}
-		this.capacidad = capacidad;
-		coleccionTutorias = new Tutoria[capacidad];
-		tamano = 0;
+	public Tutorias() {
+		coleccionTutorias = new ArrayList<>();
 	}
 
-	// Get
+	// Get PROFESOR CON DNI Y TUTORIA CON NOMBRE
+	// SESIONES PROFESOR TUTORIA Y FECHA DE LA SESION
+	// CITA RPFESOR TUTORIA SESION Y LA HORA DE LA CITA
+	
 
-	public Tutoria[] get() {
-		return copiaProfundaTutorias();
+	public List<Tutoria> get() {
+		List<Tutoria> tutoriasOrdenadas = copiaProfundaTutorias();
+		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
+		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
+		tutoriasOrdenadas.sort(Comparator.comparing(Profesor::getDni, comparadorProfesor).thenComparing(Tutoria::getNombre, comparadorTutoria));
+		return tutoriasOrdenadas;
 	}
 
 	// Copia profunda
 
-	private Tutoria[] copiaProfundaTutorias() {
-		Tutoria[] copiaTutorias = new Tutoria[capacidad];
-		for (int i = 0; !tamanoSuperado(i); i++) {
-			copiaTutorias[i] = new Tutoria(coleccionTutorias[i]);
+	private List<Tutoria> copiaProfundaTutorias() {
+		List<Tutoria> copiaTutorias = new ArrayList<>();
+		for (Tutoria tutoria : coleccionTutorias) {
+			copiaTutorias.add(new Tutoria(tutoria));
 		}
 		return copiaTutorias;
 	}
 
 	// Get
 
-	public Tutoria[] get(Profesor profesor) {
+	public List<Tutoria> get(Profesor profesor) {
 		if (profesor == null) {
 			throw new NullPointerException("ERROR: El profesor no puede ser nulo.");
 		}
-		Tutoria[] tutoriasProfesor = new Tutoria[capacidad];
+		List<Tutoria> tutoriasProfesor = new ArrayList<>();
 		int j = 0;
-		for (int i = 0; !tamanoSuperado(i); i++) {
-			if (coleccionTutorias[i].getProfesor().equals(profesor)) {
-				tutoriasProfesor[j++] = new Tutoria(coleccionTutorias[i]);
+		for (Tutoria tutoria : coleccionTutorias) {
+			if (tutoria.getProfesor().equals(profesor)) {
+				tutoriasProfesor.add(new Tutoria(tutoria));
 			}
 		}
+		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
+		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
+		tutoriasProfesor.sort(Comparator.comparing(Profesor::getDni, comparadorProfesor).thenComparing(Tutoria::getNombre, comparadorTutoria));
 		return tutoriasProfesor;
 	}
 
-	// Get de los atributos
+	// Get Tamaño
 
 	public int getTamano() {
-		return tamano;
+		return coleccionTutorias.size();
 	}
 
-	public int getCapacidad() {
-		return capacidad;
-	}
 
 	// Insertar
 
@@ -72,58 +76,30 @@ public class Tutorias {
 		if (tutoria == null) {
 			throw new NullPointerException("ERROR: No se puede insertar una tutoría nula.");
 		}
-		int indice = buscarIndice(tutoria);
-		if (capacidadSuperada(indice)) {
-			throw new OperationNotSupportedException("ERROR: No se aceptan más tutorías.");
-		}
-		if (tamanoSuperado(indice)) {
-			coleccionTutorias[indice] = new Tutoria(tutoria);
-			tamano++;
+		int indice = coleccionTutorias.indexOf(tutoria);
+		if (indice == -1) {
+			coleccionTutorias.add(new Tutoria(tutoria));
 		} else {
 			throw new OperationNotSupportedException("ERROR: Ya existe una tutoría con ese identificador.");
 		}
 
 	}
 
-	// Buscar índice
-
-	private int buscarIndice(Tutoria tutoria) {
-		int indice = 0;
-		boolean tutoriaEncontrado = false;
-		while (!tamanoSuperado(indice) && !tutoriaEncontrado) {
-			if (coleccionTutorias[indice].equals(tutoria)) {
-				tutoriaEncontrado = true;
-			} else {
-				indice++;
-			}
-		}
-		return indice;
-	}
-
-	// Tamaño superado
-
-	private boolean tamanoSuperado(int indice) {
-		return indice >= tamano;
-	}
-
-	// Capacidad superada
-
-	private boolean capacidadSuperada(int indice) {
-		return indice >= capacidad;
-	}
-
-	// Buscar
+	// Buscar Tutoria
 
 	public Tutoria buscar(Tutoria tutoria) {
 		if (tutoria == null) {
-			throw new IllegalArgumentException("ERROR: No se puede buscar una tutoría nula.");
+			throw new NullPointerException("ERROR: No se puede buscar una tutoría nula.");
 		}
-		int indice = buscarIndice(tutoria);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionTutorias.indexOf(tutoria);
+		if (indice == -1) {
 			return null;
 		} else {
-			return new Tutoria(coleccionTutorias[indice]);
+			return new Tutoria(coleccionTutorias.get(indice));
+			
+		
 		}
+	
 	}
 
 	// Borrar
@@ -132,22 +108,12 @@ public class Tutorias {
 		if (tutoria == null) {
 			throw new IllegalArgumentException("ERROR: No se puede borrar una tutoría nula.");
 		}
-		int indice = buscarIndice(tutoria);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionTutorias.indexOf(tutoria);
+		if (indice == -1) { 
 			throw new OperationNotSupportedException("ERROR: No existe ninguna tutoría con ese identificador.");
 		} else {
-			desplazarUnaPosicionHaciaIzquierda(indice);
+			coleccionTutorias.remove(indice);
 		}
 	}
 
-	// Desplazar una posición hacia la izquierda
-
-	private void desplazarUnaPosicionHaciaIzquierda(int indice) {
-		int i;
-		for (i = indice; !tamanoSuperado(i); i++) {
-			coleccionTutorias[i] = coleccionTutorias[i + 1];
-		}
-		coleccionTutorias[i] = null;
-		tamano--;
-	}
 }

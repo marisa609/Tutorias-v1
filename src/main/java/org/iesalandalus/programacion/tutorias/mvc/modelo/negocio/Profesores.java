@@ -10,10 +10,9 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Profesor;
 
 public class Profesores {
 
-	// Declaración 
+	// Declaración
 
 	private List<Profesor> coleccionProfesores;
-	
 
 	// Constructor
 
@@ -56,8 +55,8 @@ public class Profesores {
 			coleccionProfesores.add(new Profesor(profesor));
 		} else {
 			throw new OperationNotSupportedException("ERROR: Ya existe un profesor con ese DNI.");
-		}		
-		
+		}
+
 	}
 
 	// Buscar

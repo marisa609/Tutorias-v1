@@ -9,71 +9,72 @@ import java.time.temporal.ChronoUnit;
 import org.iesalandalus.programacion.utilidades.Entrada;
 
 public class Cita {
-	
-	/*Para crear la cita debemos tener en cuenta que la hora debe estar comprendida entre la hora 
-	de inicio y fin de la sesión y que dicha hora corresponde con la hora de inicio más un múltiplo
-	de los minutos de duración */
-	
-	
+
 	// Declaración
-	
+
 	private LocalTime hora;
 	public static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm");
 	private Alumno alumno;
-	private Sesion sesion;  
-	
+	private Sesion sesion;
+
 	// Get y Set
-	
+
 	public LocalTime getHora() {
 		return hora;
 	}
+
 	private void setHora(LocalTime hora) {
 		if (hora == null) {
 			throw new NullPointerException("ERROR: La hora no puede ser nula.");
 		}
-		
-	// Hay que llamar al get porque tiene que coger la hora de la sesión
-		
-	if (hora.isBefore(sesion.getHoraInicio()) || hora.isAfter(sesion.getHoraFin())) {
-		throw new IllegalArgumentException("ERROR: La hora debe estar comprendida entre la hora de inicio y fin de la sesión.");
-	}
-	
-	if(((hora.toSecondOfDay() - sesion.getHoraInicio().toSecondOfDay()) / 60) % sesion.getMinutosDuracion()!=0) {
-		throw new IllegalArgumentException("ERROR: La hora debe estar comprendida entre la hora de inicio y fin de la sesión.");// cambia mensaje de error debe estar mal
-	} 
+
+		if (hora.isAfter(sesion.getHoraFin().minusMinutes(sesion.getMinutosDuracion()))) {
+			throw new IllegalArgumentException(
+					"ERROR: La hora debe estar comprendida entre la hora de inicio y fin de la sesión.");
+		}
+
+		if (hora.isBefore(sesion.getHoraInicio()) || hora.isAfter(sesion.getHoraFin())) {
+			throw new IllegalArgumentException(
+					"ERROR: La hora debe estar comprendida entre la hora de inicio y fin de la sesión.");
+		}
+
+		if (((hora.toSecondOfDay() - sesion.getHoraInicio().toSecondOfDay()) / 60) % sesion.getMinutosDuracion() != 0) {
+			throw new IllegalArgumentException(
+					"ERROR: La hora debe comenzar en un múltiplo de los minutos de duración.");
+		}
 		this.hora = hora;
 	}
-	
+
 	public Alumno getAlumno() {
-		return alumno = new Alumno(alumno);
+		return new Alumno(alumno);
 	}
+
 	private void setAlumno(Alumno alumno) {
-		if (alumno==null) {
+		if (alumno == null) {
 			throw new NullPointerException("ERROR: El alumno no puede ser nulo.");
 		}
 		this.alumno = new Alumno(alumno);
 	}
-	
+
 	public Sesion getSesion() {
-		return sesion = new Sesion(sesion);
+		return new Sesion(sesion);
 	}
+
 	private void setSesion(Sesion sesion) {
-		if (sesion==null) {
+		if (sesion == null) {
 			throw new NullPointerException("ERROR: La sesión no puede ser nula.");
 		}
-		this.sesion =  new Sesion(sesion);
+		this.sesion = new Sesion(sesion);
 	}
-	
-	//
-	
+
 	// Constructor con parámetros
-	
+
 	public Cita(Alumno alumno, Sesion sesion, LocalTime hora) {
 		setAlumno(alumno);
 		setSesion(sesion);
 		setHora(hora);
 	}
-	
+
 	// Contructor copia
 
 	public Cita(Cita cita) {
@@ -84,9 +85,9 @@ public class Cita {
 		setSesion(cita.getSesion());
 		setHora(cita.getHora());
 	}
-	
+
 	// Método hashCode
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -96,9 +97,9 @@ public class Cita {
 		result = prime * result + ((sesion == null) ? 0 : sesion.hashCode());
 		return result;
 	}
-	
+
 	// Métodp equals
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -125,20 +126,14 @@ public class Cita {
 			return false;
 		return true;
 	}
-	
+
 	// Método toString
-	
+
 	@Override
 	public String toString() {
-		
-		return String.format("alumno=%s, sesion=%s, hora=%s", getAlumno().toString(), getSesion().toString(), getHora().format(FORMATO_HORA));
+
+		return String.format("alumno=%s, sesion=%s, hora=%s", getAlumno().toString(), getSesion().toString(),
+				getHora().format(FORMATO_HORA));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

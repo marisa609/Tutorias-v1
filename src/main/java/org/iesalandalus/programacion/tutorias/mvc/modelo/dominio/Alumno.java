@@ -63,7 +63,7 @@ public class Alumno {
 
 		setNombre(alumno.getNombre());
 		setCorreo(alumno.getCorreo());
-		expediente=alumno.getExpediente();
+		expediente = alumno.getExpediente();
 	}
 
 	// Get y Set
@@ -79,11 +79,11 @@ public class Alumno {
 		if (nombre.trim().equals("")) {
 			throw new IllegalArgumentException("ERROR: El nombre no tiene un formato válido.");
 		}
-		if(!nombre.matches(ER_NOMBRE)) {
+		if (!nombre.matches(ER_NOMBRE)) {
 			throw new IllegalArgumentException("ERROR: El nombre no tiene un formato válido.");
 		}
-			
-		this.nombre = formateaNombre(nombre); 
+
+		this.nombre = formateaNombre(nombre);
 	}
 
 	public String getCorreo() {
@@ -110,38 +110,38 @@ public class Alumno {
 	}
 
 	private void setExpediente() {
-		
+
 		incrementaUltimoIdentificador();
-		expediente=PREFIJO_EXPEDIENTE+getIniciales()+"_"+ultimoIdentificador;
-	
+		expediente = PREFIJO_EXPEDIENTE + getIniciales() + "_" + ultimoIdentificador;
+
 	}
-	
+
 	// Método getIniciales
 
-		private String getIniciales() {
+	private String getIniciales() {
 
-			StringBuilder stb = new StringBuilder();
+		StringBuilder stb = new StringBuilder();
 
-			Pattern p = Pattern.compile("([A-Z]*)");
-			Matcher m = p.matcher(nombre);
+		Pattern p = Pattern.compile("([A-Z]*)");
+		Matcher m = p.matcher(nombre);
 
-			while (m.find()) {
-				String inicial = m.group(1);
-				stb.append(inicial);
-			}
-
-			return stb.toString();
-
+		while (m.find()) {
+			String inicial = m.group(1);
+			stb.append(inicial);
 		}
 
+		return stb.toString();
+
+	}
+
 	public static Alumno getAlumnoFicticio(String correo) {
-		if (correo==null)
+		if (correo == null)
 			throw new NullPointerException("ERROR: El correo no puede ser nulo.");
-		
+
 		if (correo.trim().equals("")) {
 			throw new IllegalArgumentException("ERROR: El formato del correo no es válido.");
 		}
-		
+
 		return new Alumno("Alumnx Inventadx", correo);
 	}
 
@@ -176,7 +176,7 @@ public class Alumno {
 
 	@Override
 	public String toString() {
-		return "nombre=" + nombre + " (" + getIniciales() +"),"+ " correo=" + correo + ", expediente=" + expediente ;
+		return "nombre=" + nombre + " (" + getIniciales() + ")," + " correo=" + correo + ", expediente=" + expediente;
 	}
 
 }

@@ -96,7 +96,7 @@ public class Profesor {
 		return dni;
 	}
 
-	private void setDni(String dni) { 
+	private void setDni(String dni) {
 		if (dni == null) {
 			throw new NullPointerException("ERROR: El DNI no puede ser nulo.");
 		}
@@ -120,7 +120,7 @@ public class Profesor {
 
 	// Método getProfesorFicticio
 
-	public static Profesor getProfesorFicticio(String dni) { 
+	public static Profesor getProfesorFicticio(String dni) {
 		if (dni == null)
 			throw new NullPointerException("ERROR: El DNI no puede ser nulo.");
 
