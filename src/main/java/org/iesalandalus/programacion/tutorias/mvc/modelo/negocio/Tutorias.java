@@ -21,16 +21,16 @@ public class Tutorias {
 		coleccionTutorias = new ArrayList<>();
 	}
 
-	// Get PROFESOR CON DNI Y TUTORIA CON NOMBRE
-	// SESIONES PROFESOR TUTORIA Y FECHA DE LA SESION
 	// CITA RPFESOR TUTORIA SESION Y LA HORA DE LA CITA
-	
+
+	// Las tutorías se ordenarán por profesor y por el nombre de la tutoría.
 
 	public List<Tutoria> get() {
 		List<Tutoria> tutoriasOrdenadas = copiaProfundaTutorias();
 		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
 		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
-		tutoriasOrdenadas.sort(Comparator.comparing(Profesor::getDni, comparadorProfesor).thenComparing(Tutoria::getNombre, comparadorTutoria));
+		tutoriasOrdenadas.sort(Comparator.comparing(Profesor::getDni, comparadorProfesor)
+				.thenComparing(Tutoria::getNombre, comparadorTutoria));
 		return tutoriasOrdenadas;
 	}
 
@@ -45,21 +45,22 @@ public class Tutorias {
 	}
 
 	// Get
+	// Cuando se listen las tutorías de un profesor se mostrarán ordenadas por
+	// nombre de la tutoría.
 
 	public List<Tutoria> get(Profesor profesor) {
 		if (profesor == null) {
 			throw new NullPointerException("ERROR: El profesor no puede ser nulo.");
 		}
 		List<Tutoria> tutoriasProfesor = new ArrayList<>();
-		int j = 0;
 		for (Tutoria tutoria : coleccionTutorias) {
 			if (tutoria.getProfesor().equals(profesor)) {
 				tutoriasProfesor.add(new Tutoria(tutoria));
 			}
 		}
-		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
+
 		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
-		tutoriasProfesor.sort(Comparator.comparing(Profesor::getDni, comparadorProfesor).thenComparing(Tutoria::getNombre, comparadorTutoria));
+		tutoriasProfesor.sort(Comparator.comparing(Tutoria::getNombre, comparadorTutoria));
 		return tutoriasProfesor;
 	}
 
@@ -68,7 +69,6 @@ public class Tutorias {
 	public int getTamano() {
 		return coleccionTutorias.size();
 	}
-
 
 	// Insertar
 
@@ -96,10 +96,9 @@ public class Tutorias {
 			return null;
 		} else {
 			return new Tutoria(coleccionTutorias.get(indice));
-			
-		
+
 		}
-	
+
 	}
 
 	// Borrar
@@ -109,7 +108,7 @@ public class Tutorias {
 			throw new IllegalArgumentException("ERROR: No se puede borrar una tutoría nula.");
 		}
 		int indice = coleccionTutorias.indexOf(tutoria);
-		if (indice == -1) { 
+		if (indice == -1) {
 			throw new OperationNotSupportedException("ERROR: No existe ninguna tutoría con ese identificador.");
 		} else {
 			coleccionTutorias.remove(indice);

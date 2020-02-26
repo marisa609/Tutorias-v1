@@ -1,7 +1,12 @@
 package org.iesalandalus.programacion.tutorias.mvc.modelo.negocio;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Comparator;
+
 import javax.naming.OperationNotSupportedException;
 
+import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Sesion;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
 
@@ -9,61 +14,61 @@ public class Sesiones {
 
 	// Declaración de atributos
 
-	private int capacidad;
-	private Sesion[] coleccionSesiones;
-	private int tamano;
+	private List<Sesion> coleccionSesiones;
 
 	// Constructor
 
-	public Sesiones(int capacidad) {
-		if (capacidad <= 0) {
-			throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
-		}
-		this.capacidad = capacidad;
-		coleccionSesiones = new Sesion[capacidad];
-		tamano = 0;
-	}
-
-	// Get
-
-	public Sesion[] get() {
-		return copiaProfundaSesiones();
+	public Sesiones() {
+		coleccionSesiones = new ArrayList<>();
 	}
 
 	// Copia profunda
 
-	private Sesion[] copiaProfundaSesiones() {
-		Sesion[] copiaSesiones = new Sesion[capacidad];
-		for (int i = 0; !tamanoSuperado(i); i++) {
-			copiaSesiones[i] = new Sesion(coleccionSesiones[i]);
+	private List<Sesion> copiaProfundaSesiones() {
+		List<Sesion> copiaSesiones = new ArrayList<>();
+		for (Sesion sesion : coleccionSesiones) {
+			copiaSesiones.add(new Sesion(sesion));
 		}
 		return copiaSesiones;
 	}
 
+	// SESIONES PROFESOR TUTORIA Y FECHA DE LA SESION ¿? Profesor ¿?
+	// Las sesiones se ordenarán por tutoría y por fecha.
+
 	// Get
 
-	public Sesion[] get(Tutoria tutoria) {
+	public List<Sesion> get() {
+		List<Sesion> sesionesOrdenadas = copiaProfundaSesiones();
+		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getNombre);
+		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getFecha);
+		sesionesOrdenadas.sort(Comparator.comparing(Tutoria::getNotbre, comparadorTutoria)
+				.thenComparing(Sesion::getFecha, comparadorSesion));
+		return sesionesOrdenadas;
+	}
+
+	// Get
+	// Cuando se listen las sesiones de una tutoría se mostrarán ordenadas por fecha
+	// de la sesión
+
+	public List<Sesion> get(Tutoria tutoria) {
 		if (tutoria == null) {
 			throw new NullPointerException("ERROR: La tutoría no puede ser nulo.");
 		}
-		Sesion[] sesionesTutoria = new Sesion[capacidad];
-		int j = 0;
-		for (int i = 0; !tamanoSuperado(i); i++) {
-			if (coleccionSesiones[i].getTutoria().equals(tutoria)) {
-				sesionesTutoria[j++] = new Sesion(coleccionSesiones[i]);
+		List<Sesion> sesionesTutoria = new ArrayList<>();
+		for (Sesion sesion : coleccionSesiones) {
+			if (sesion.getTutoria().equals(tutoria)) {
+				sesionesTutoria.add(new Sesion(sesion));
 			}
 		}
+		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getFecha);
+		sesionesTutoria.sort(Comparator.comparing(Sesion::getFecha, comparadorSesion));
 		return sesionesTutoria;
 	}
 
-	// Get
+	// Get Tamaño
 
 	public int getTamano() {
-		return tamano;
-	}
-
-	public int getCapacidad() {
-		return capacidad;
+		return coleccionSesiones.size();
 	}
 
 	// Insertar
@@ -72,58 +77,29 @@ public class Sesiones {
 		if (sesion == null) {
 			throw new NullPointerException("ERROR: No se puede insertar una sesión nula.");
 		}
-		int indice = buscarIndice(sesion);
-		if (capacidadSuperada(indice)) {
-			throw new OperationNotSupportedException("ERROR: No se aceptan más sesiones.");
-		}
-		if (tamanoSuperado(indice)) {
-			coleccionSesiones[indice] = new Sesion(sesion);
-			tamano++;
+		int indice = coleccionSesiones.indexOf(sesion);
+		if (indice == -1) {
+			coleccionSesiones.add(new Sesion(sesion));
 		} else {
 			throw new OperationNotSupportedException("ERROR: Ya existe una sesión con esa fecha.");
 		}
 
 	}
 
-	// Buscar índice
-
-	private int buscarIndice(Sesion sesion) {
-		int indice = 0;
-		boolean sesionEncontrado = false;
-		while (!tamanoSuperado(indice) && !sesionEncontrado) {
-			if (coleccionSesiones[indice].equals(sesion)) {
-				sesionEncontrado = true;
-			} else {
-				indice++;
-			}
-		}
-		return indice;
-	}
-
-	// Tamaño superado
-
-	private boolean tamanoSuperado(int indice) {
-		return indice >= tamano;
-	}
-
-	// Capacidad superada
-
-	private boolean capacidadSuperada(int indice) {
-		return indice >= capacidad;
-	}
-
-	// Buscar
+	// Buscar Sesion
 
 	public Sesion buscar(Sesion sesion) {
 		if (sesion == null) {
-			throw new IllegalArgumentException("ERROR: No se puede buscar una sesión nula.");
+			throw new NullPointerException("ERROR: No se puede buscar una sesión nula.");
 		}
-		int indice = buscarIndice(sesion);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionSesiones.indexOf(sesion);
+		if (indice == -1) {
 			return null;
 		} else {
-			return new Sesion(coleccionSesiones[indice]);
+			return new Sesion(coleccionSesiones.get(indice));
+
 		}
+
 	}
 
 	// Borrar
@@ -132,22 +108,12 @@ public class Sesiones {
 		if (sesion == null) {
 			throw new IllegalArgumentException("ERROR: No se puede borrar una sesión nula.");
 		}
-		int indice = buscarIndice(sesion);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionSesiones.indexOf(sesion);
+		if (indice == -1) {
 			throw new OperationNotSupportedException("ERROR: No existe ninguna sesión con esa fecha.");
 		} else {
-			desplazarUnaPosicionHaciaIzquierda(indice);
+			coleccionSesiones.remove(indice);
 		}
 	}
 
-	// Desplazar una posición hacia la izquierda
-
-	private void desplazarUnaPosicionHaciaIzquierda(int indice) {
-		int i;
-		for (i = indice; !tamanoSuperado(i); i++) {
-			coleccionSesiones[i] = coleccionSesiones[i + 1];
-		}
-		coleccionSesiones[i] = null;
-		tamano--;
-	}
 }
