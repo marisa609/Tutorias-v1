@@ -41,6 +41,8 @@ public class Modelo {
 	public void insertar(Profesor profesor) throws OperationNotSupportedException, IllegalArgumentException {
 		profesores.insertar(profesor);
 	}
+	
+	// Al insertar una tutoría deberemos comprobar que el profesor de la tutoría existe e insertar la tutoría para el profesor encontrado.
 
 	public void insertar(Tutoria tutoria) throws OperationNotSupportedException, IllegalArgumentException {
 		if (tutoria == null) {
@@ -55,6 +57,8 @@ public class Modelo {
 
 		tutorias.insertar(new Tutoria(profesor, tutoria.getNombre()));
 	}
+	
+	// Al insertar una sesión deberemos comprobar que la tutoría de la sesión existe e insertar la sesión para la tutoría encontrada.
 
 	public void insertar(Sesion sesion) throws OperationNotSupportedException, IllegalArgumentException {
 		if (sesion == null) {
@@ -70,6 +74,8 @@ public class Modelo {
 		sesiones.insertar(new Sesion(tutoria, sesion.getFecha(), sesion.getHoraInicio(), sesion.getHoraFin(),
 				sesion.getMinutosDuracion()));
 	}
+	
+	// Al insertar una cita deberemos comprobar que la sesión de la cita existe y que el alumno de la cita también existe e insertar la cita para la sesión y el alumno encontrados.
 
 	public void insertar(Cita cita) throws OperationNotSupportedException, IllegalArgumentException {
 		if (cita == null) {

@@ -77,11 +77,9 @@ public class Tutoria {
 		if (getClass() != obj.getClass())
 			return false;
 		Tutoria other = (Tutoria) obj;
-		if (nombre == null) {
-			if (other.nombre != null)
-				return false;
-		} else if (!nombre.equals(other.nombre))
-			return false;
+		Tutoria distinta = (Tutoria) obj;
+		if (this.getNombre().toUpperCase().equals(distinta.getNombre().toUpperCase()))
+			return true;
 		if (profesor == null) {
 			if (other.profesor != null)
 				return false;

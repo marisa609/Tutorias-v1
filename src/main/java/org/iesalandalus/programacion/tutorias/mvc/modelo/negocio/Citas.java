@@ -8,7 +8,9 @@ import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Cita;
+import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Sesion;
+import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
 
 public class Citas {
 
@@ -34,14 +36,12 @@ public class Citas {
 
 	// Get
 
-	// Las citas se ordenarán por sesión y por hora de la sesión.
-
 	public List<Cita> get() {
 		List<Cita> citasOrdenadas = copiaProfundaCita();
-		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getFecha)
-				.thenComparing(Sesion::getHoraInicio);
-		Comparator<Cita> comparadorCita = Comparator.comparing(Cita::getHora);
-		citasOrdenadas.sort(Comparator.comparing(Cita::getSesion, comparadorSesion));
+		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
+		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getProfesor, comparadorProfesor).thenComparing(Tutoria::getNombre);
+		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getTutoria, comparadorTutoria).thenComparing(Sesion::getFecha);
+		citasOrdenadas.sort(Comparator.comparing(Cita::getSesion, comparadorSesion).thenComparing(Cita::getHora));
 		return citasOrdenadas;
 	}
 
