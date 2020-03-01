@@ -39,8 +39,10 @@ public class Citas {
 	public List<Cita> get() {
 		List<Cita> citasOrdenadas = copiaProfundaCita();
 		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
-		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getProfesor, comparadorProfesor).thenComparing(Tutoria::getNombre);
-		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getTutoria, comparadorTutoria).thenComparing(Sesion::getFecha);
+		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getProfesor, comparadorProfesor)
+				.thenComparing(Tutoria::getNombre);
+		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getTutoria, comparadorTutoria)
+				.thenComparing(Sesion::getFecha);
 		citasOrdenadas.sort(Comparator.comparing(Cita::getSesion, comparadorSesion).thenComparing(Cita::getHora));
 		return citasOrdenadas;
 	}
@@ -58,9 +60,7 @@ public class Citas {
 				citasSesion.add(new Cita(cita));
 			}
 		}
-		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getFecha)
-				.thenComparing(Sesion::getHoraInicio);
-		citasSesion.sort(Comparator.comparing(Cita::getSesion, comparadorSesion));
+		citasSesion.sort(Comparator.comparing(Cita::getHora));
 		return citasSesion;
 	}
 
@@ -77,6 +77,14 @@ public class Citas {
 				citasAlumno.add(new Cita(cita));
 			}
 		}
+
+		Comparator<Profesor> comparadorProfesor = Comparator.comparing(Profesor::getDni);
+		Comparator<Tutoria> comparadorTutoria = Comparator.comparing(Tutoria::getProfesor, comparadorProfesor)
+				.thenComparing(Tutoria::getNombre);
+		Comparator<Sesion> comparadorSesion = Comparator.comparing(Sesion::getTutoria, comparadorTutoria)
+				.thenComparing(Sesion::getFecha);
+		citasAlumno.sort(Comparator.comparing(Cita::getSesion, comparadorSesion).thenComparing(Cita::getHora));
+
 		return citasAlumno;
 	}
 

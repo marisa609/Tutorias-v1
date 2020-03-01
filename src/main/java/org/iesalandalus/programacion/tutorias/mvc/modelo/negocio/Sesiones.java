@@ -48,7 +48,7 @@ public class Sesiones {
 
 	public List<Sesion> get(Tutoria tutoria) {
 		if (tutoria == null) {
-			throw new NullPointerException("ERROR: La tutoría no puede ser nulo.");
+			throw new NullPointerException("ERROR: La tutoría no puede ser nula.");
 		}
 		List<Sesion> sesionesTutoria = new ArrayList<>();
 		for (Sesion sesion : coleccionSesiones) {
@@ -87,7 +87,7 @@ public class Sesiones {
 
 	public Sesion buscar(Sesion sesion) {
 		if (sesion == null) {
-			throw new NullPointerException("ERROR: No se puede buscar una sesión nula.");
+			throw new IllegalArgumentException("ERROR: No se puede buscar una sesión nula.");
 		}
 		int indice = coleccionSesiones.indexOf(sesion);
 		if (indice == -1) {

@@ -21,7 +21,7 @@ public class Tutorias {
 		coleccionTutorias = new ArrayList<>();
 	}
 
-	// CITA: RPFESOR TUTORIA SESION Y LA HORA DE LA CITA
+	
 
 	// Las tutorías se ordenarán por profesor y por el nombre de la tutoría.
 
@@ -87,7 +87,7 @@ public class Tutorias {
 
 	public Tutoria buscar(Tutoria tutoria) {
 		if (tutoria == null) {
-			throw new NullPointerException("ERROR: No se puede buscar una tutoría nula.");
+			throw new IllegalArgumentException("ERROR: No se puede buscar una tutoría nula.");
 		}
 		int indice = coleccionTutorias.indexOf(tutoria);
 		if (indice == -1) {

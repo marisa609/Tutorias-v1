@@ -55,7 +55,7 @@ public class Alumnos {
 		if (indice == -1) {
 			coleccionAlumnos.add(new Alumno(alumno));
 		} else {
-			throw new OperationNotSupportedException("ERROR: Ya existe un alumno con ese correo.");
+			throw new OperationNotSupportedException("ERROR: Ya existe un alumno con ese expediente.");
 		}
 
 	}
@@ -82,7 +82,7 @@ public class Alumnos {
 		}
 		int indice = coleccionAlumnos.indexOf(alumno);
 		if (indice == -1) {
-			throw new OperationNotSupportedException("ERROR: No existe ningún alumno con ese correo.");
+			throw new OperationNotSupportedException("ERROR: No existe ningún alumno con ese expediente.");
 		} else {
 			coleccionAlumnos.remove(indice);
 		}
