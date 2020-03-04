@@ -13,7 +13,7 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
 import org.iesalandalus.programacion.tutorias.mvc.vista.Vista;
 
 public class Controlador {
-
+ 
 	private Vista vista;
 	private Modelo modelo;
 

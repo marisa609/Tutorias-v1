@@ -82,6 +82,8 @@ public class Tutoria {
 				return false;
 		} else if (!nombre.equals(other.nombre))
 			return false;
+		if(this.getNombre().toUpperCase().equals(other.getNombre().toUpperCase()))
+			return true;
 		if (profesor == null) {
 			if (other.profesor != null)
 				return false;
